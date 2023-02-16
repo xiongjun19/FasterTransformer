@@ -31,6 +31,21 @@ from examples.pytorch.gpt.utils.parallel_gpt import ParallelGPT
 
 from utils import word_list
 
+import ctypes
+
+_cudart = ctypes.CDLL('libcudart.so')
+
+
+def p_start():
+    ret = _cudart.cudaProfilerStart()
+    if ret != 0:
+        raise Exception("cudaProfilerStart() returned %d" % ret)
+
+
+def p_stop():
+    ret = _cudart.cudaProfilerStop()
+    if ret != 0:
+        raise Exception("cudaProfilerStop() returned %d" % ret)
 
 
 @torch.no_grad()
@@ -357,12 +372,15 @@ def main():
         iterations = 5
         for _ in range(iterations):
             gpt_generate_fn()
-        time = timeit.default_timer()
-
+        start_status = False
         for _ in range(iterations):
+            if not start_status:
+                start_status = True
+                p_start()
             gpt_generate_fn()
-        time_elapsed = timeit.default_timer() - time
-        print(f'[INFO] GPT time costs: {time_elapsed * 1000 / iterations:.2f} ms')
+        if start_status:
+            p_stop()
+            start_status = False
 
 
 if __name__ == '__main__':
