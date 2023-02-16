@@ -22,10 +22,14 @@ import multiprocessing
 import numpy as np
 from pathlib import Path
 import torch
+from typing import Optional
+from typing import Union
 
 import os
 import sys
 from transformers import GPT2Model # transformers-4.10.0-py3
+from transformers.configuration_utils import PretrainedConfig
+
 dir_path = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(dir_path + "/../../../..")
 sys.path.append(dir_path)
@@ -115,9 +119,9 @@ def get_config(cls, pretrained_model_name_or_path: Optional[Union[str, os.PathLi
         if from_pipeline is not None:
             user_agent["using_pipeline"] = from_pipeline
 
-        if _is_offline_mode and not local_files_only:
-            logger.info("Offline mode: forcing local_files_only=True")
-            local_files_only = True
+        # if _is_offline_mode and not local_files_only:
+        #     logger.info("Offline mode: forcing local_files_only=True")
+        #     local_files_only = True
 
         # Load config if we don't provide a configuration
         if not isinstance(config, PretrainedConfig):
