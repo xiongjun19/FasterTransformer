@@ -1,16 +1,3 @@
-# Copyright (c) 2021-2023, NVIDIA CORPORATION.  All rights reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 
 '''
 Convert huggingface GPT model. Use https://huggingface.co/gpt2 as demo.
@@ -148,6 +135,7 @@ def get_config(cls, pretrained_model_name_or_path: Optional[Union[str, os.PathLi
 def load_gpt2_model(in_file):
     model_cfg, model_args, model_kwargs = get_config(GPT2Model, in_file)
     org_model = GPT2Model(model_cfg, *model_args, **model_kwargs)
+    org_model = org_model.half()
     return org_model
 
 
@@ -167,7 +155,7 @@ def split_and_convert(args):
     # load position_embedding from rank 0
     torch_device = 'cuda' if torch.cuda.is_available() else 'cpu'
     # model = GPT2Model.from_pretrained(args.in_file).to(torch_device)
-    model = load_gpt2_model(args.in_file) 
+    model = load_gpt2_model(args.in_file)
 
     hf_config = vars(model.config)
 
