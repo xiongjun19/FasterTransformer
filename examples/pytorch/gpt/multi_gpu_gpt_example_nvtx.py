@@ -373,11 +373,16 @@ def main():
         for _ in range(iterations):
             gpt_generate_fn()
         start_status = False
-        for _ in range(iterations):
-            if not start_status:
+        for _t_i in range(iterations):
+            if _t_i==0 and not start_status:
                 start_status = True
                 p_start()
             gpt_generate_fn()
+            if _t_i == iterations -2:
+                if start_status:
+                    p_stop()
+                    start_status = False
+
         if start_status:
             p_stop()
             start_status = False
