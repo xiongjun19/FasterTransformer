@@ -62,3 +62,8 @@ RUN mkdir /var/run/sshd -p && \
       -DBUILD_CUTLASS_MIXED_GEMM=${BUILD_MIXED_GEMM} -DCUSPARSELT_PATH=/workspace/FasterTransformer/build/libcusparse_lt/ \
       -DBUILD_MULTI_GPU=${BUILD_MULTI_GPU} -DBUILD_TRT=ON -DENABLE_FP8=${ENABLE_FP8} .. && \
     make -j"$(grep -c ^processor /proc/cpuinfo)"
+
+
+RUN apt-get update && apt-get install -y sysstat
+RUN pip install gpustats
+RUN pip install openpyxl
