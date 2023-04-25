@@ -216,7 +216,7 @@ def main():
             contexts = f.read().splitlines()
             batch_size = min(len(contexts), max_batch_size)
         contexts = contexts[:batch_size]
-        start_ids = [torch.tensor(enc.encode(c), dtype=torch.int32, device=device) for c in contexts]
+        start_ids = [torch.tensor(enc.encode(c)[:args.input_len], dtype=torch.int32, device=device) for c in contexts]
     else:  # unconditional case
         batch_size = max_batch_size
         contexts = ['<|endoftext|>'] * batch_size
@@ -227,7 +227,7 @@ def main():
     print(start_lengths)
 
     start_ids = pad_sequence(start_ids, batch_first=True, padding_value=end_id)
-    start_lengths = torch.IntTensor(start_lengths[:, :args.input_len])
+    start_lengths = torch.IntTensor(start_lengths)
 
 
     # Prepare model.
