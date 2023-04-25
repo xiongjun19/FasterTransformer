@@ -227,7 +227,7 @@ def main():
     print(start_lengths)
 
     start_ids = pad_sequence(start_ids, batch_first=True, padding_value=end_id)
-    start_lengths = torch.IntTensor(start_lengths)
+    start_lengths = torch.IntTensor(start_lengths[:, :args.input_len])
 
 
     # Prepare model.
