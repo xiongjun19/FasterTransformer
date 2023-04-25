@@ -366,8 +366,10 @@ def main():
         torch.cuda.synchronize()
 
         t_start = torch.cuda.Event(enable_timing=True)
-        warm_res = gpt_generate_fn_warm()
         t_end = torch.cuda.Event(enable_timing=True)
+        t_start.record()
+        warm_res = gpt_generate_fn_warm()
+        t_end.record()
         torch.cuda.synchronize()
         prefill_time = t_start.elapsed_time(t_end) / 1000 # convert mill to sec
         if rank == 0:
@@ -378,8 +380,10 @@ def main():
         torch.cuda.synchronize()
 
         t_start = torch.cuda.Event(enable_timing=True)
-        gpt_generate_fn()
         t_end = torch.cuda.Event(enable_timing=True)
+        t_start.record()
+        gpt_generate_fn()
+        t_end.record()
         torch.cuda.synchronize()
         gen_time = t_start.elapsed_time(t_end) / 1000 # convert mill to sec
         dec_time = gen_time - prefill_time
