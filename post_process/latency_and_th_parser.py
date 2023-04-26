@@ -32,8 +32,8 @@ def get_info(f_path):
                 "prefill_lat": obj['prefill_lat'],
                 "dec_lat": obj['dec_lat'],
                 "tot_lat": obj['gen_lat'],
-                "tot_tho": obj['dec_tho'],
-                'gen_tho': obj['gen_tho'],
+                "tot_tho": obj['gen_tho'],
+                'gen_tho': obj['dec_tho'],
                 }
     return None
 
