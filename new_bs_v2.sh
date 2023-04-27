@@ -9,11 +9,11 @@ model_dir="/workspace/data/hg_models"
 num_gpu=4
 arg1="--vocab_file /workspace/data/hg_models/opt-66b/vocab.json --merges_file /workspace/data/hg_models/opt-66b/merges.txt --lib_path build/lib/libth_transformer.so --inference_data_type fp16  --time"
 
-model_name_arr=("opt-30b" "opt-30b")
+model_name_arr=("opt-30b" "opt-30b" "opt-30b" "opt-30b")
 input_len_arr=(512 512 512 512)
 out_len_arr=(64 64 64 64)
 # num_gpu_arr=(1 2 4 8)
-bs_arr=(2 4 2 4)
+bs_arr=(1 8 16 24)
 num_bs=1
 percent="0 100 0 100 0 100"
 
